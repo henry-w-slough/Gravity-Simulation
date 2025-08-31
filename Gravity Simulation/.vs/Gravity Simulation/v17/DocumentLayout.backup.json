@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{BA53AB1F-DF7E-4C4B-BF3D-EC0C740236FA}|Gravity Simulation\\Gravity Simulation.vcxproj|C:\\Users\\Henry Slough\\Documents\\GitHub\\Gravity-Simulation\\Gravity Simulation\\Gravity Simulation\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{BA53AB1F-DF7E-4C4B-BF3D-EC0C740236FA}|Gravity Simulation\\Gravity Simulation.vcxproj|solutionrelative:Gravity Simulation\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA53AB1F-DF7E-4C4B-BF3D-EC0C740236FA}|Gravity Simulation\\Gravity Simulation.vcxproj|C:\\Users\\Henry Slough\\Documents\\GitHub\\Gravity-Simulation\\Gravity Simulation\\Gravity Simulation\\screenAttributes.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{BA53AB1F-DF7E-4C4B-BF3D-EC0C740236FA}|Gravity Simulation\\Gravity Simulation.vcxproj|solutionrelative:Gravity Simulation\\screenAttributes.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,7 +17,26 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
+          "DockedWidth": 182,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ScreenAttributes.h",
+              "DocumentMoniker": "C:\\Users\\Henry Slough\\Documents\\GitHub\\Gravity-Simulation\\Gravity Simulation\\Gravity Simulation\\ScreenAttributes.h",
+              "RelativeDocumentMoniker": "Gravity Simulation\\ScreenAttributes.h",
+              "ToolTip": "C:\\Users\\Henry Slough\\Documents\\GitHub\\Gravity-Simulation\\Gravity Simulation\\Gravity Simulation\\ScreenAttributes.h",
+              "RelativeToolTip": "Gravity Simulation\\ScreenAttributes.h",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAADQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-08-29T15:52:37.393Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 218,
           "SelectedChildIndex": 0,
           "Children": [
             {
@@ -24,7 +47,7 @@
               "RelativeDocumentMoniker": "Gravity Simulation\\main.cpp",
               "ToolTip": "C:\\Users\\Henry Slough\\Documents\\GitHub\\Gravity-Simulation\\Gravity Simulation\\Gravity Simulation\\main.cpp",
               "RelativeToolTip": "Gravity Simulation\\main.cpp",
-              "ViewState": "AgIAAEYAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGsAAAAAAAAAAAApwIMAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-08-24T15:41:09.62Z",
               "EditorCaption": ""

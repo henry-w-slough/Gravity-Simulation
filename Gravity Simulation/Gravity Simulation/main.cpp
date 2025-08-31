@@ -1,136 +1,141 @@
 #define GLFW_INCLUDE_NONE
 #include <iostream>
+
+#include <string>
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-int main(void)
+#include "ScreenAttributes.h"
+
+using namespace std;
+
+
+
+
+const char* vertexShaderSource = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
+const char* fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(0.1f, 0.4f, 0.3f, 1.0f);\n"
+"}\n\0";
+
+
+
+
+
+
+
+
+int main()
 {
-    //initializing both GLFW and GLAD
     glfwInit();
+
+    //used for error checks
+    int success;
+
+     
+    //object for all window-related operations
+    Screen screen = {800, 800, { 0.1f, 0.1f, 0.1f, 1.0f }, "Gravity Simulation"};
+
+    screen.SCR_WIDTH = 800;
+    screen.SCR_HEIGHT = 800;
+
+    GLFWwindow* window = screen.initGlfwWindow();
+
+
+    //loading glad and error handling
+    success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    if (!success) {
+        cout << "ERROR: Failed to load GLAD library!" << endl;
+    }
+    
+    
+    //object to reference and control vertex shader
+    Shader vertexShaderOBJ = {vertexShaderSource, GL_VERTEX_SHADER};
+    vertexShaderOBJ.createShader();
+    unsigned int vertexShader = vertexShaderOBJ.shader;
+
+    Shader fragmentShaderOBJ = { fragmentShaderSource, GL_FRAGMENT_SHADER };
+    fragmentShaderOBJ.createShader();
+    unsigned int fragmentShader = fragmentShaderOBJ.shader;
+
+
+
+
+    ShaderProgram shaderProgramOBJ;
+    unsigned int shaderProgram = shaderProgramOBJ.program;
+
+    shaderProgramOBJ.attachShader(vertexShader);
+    shaderProgramOBJ.attachShader(fragmentShader);
+
+    shaderProgramOBJ.linkProgram();
+
+
+
+
+
 
 
    
-    //globals
-    GLFWwindow* window;
-
-    int SCREEN_WIDTH = 800;
-    int SCREEN_HEIGHT = 800;
 
 
-    
-    //vertex shader sources
-    const char* vertexShaderSource = "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-        "}\0";
-
-    const char* fragmentShaderSource = "#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n";
-        "}\n";
-        
-
-
-
-    //window declaration
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Gravity Simulation", NULL, NULL);
-
-
-    //error check for if the window can't be created
-    if (!window)
-    {
-        std::cout << "Window failed to create" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-        
-    //make the created window THE window.
-    glfwMakeContextCurrent(window);
-
-
-
-    //error throw for GLAD during it's initialization
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-    //set the size of the screen for GLAD after it's initialization
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-
-    //vertices are in xyz format and positions are %'s of the screen width and height
-    float triangleVertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left  
+         0.5f, -0.5f, 0.0f, // right 
+         -0.5f,  0.5f, 0.0f  // top   
     };
 
 
-    //vertex buffer object stuff
 
+
+
+
+
+    //setting up vertex buffer object + vertex array object
     unsigned int VBO;
+    unsigned int VAO;
 
-    //buffer object used for data sent for displaying
+    glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
-    //bind the buffer of type GL_ARRAY_BUFFER to VBO object
+    glBindVertexArray(VAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    //sending the data for the vertices to the buffer. 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    //vertex shader stuff
-
-    unsigned int vertexShader;
-    //pretty self explanatory. Shader type for argument
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-    //attaching vertexShaderSource to vertexShader
-
-    glCompileShader(vertexShader);
-
-
-
-
-    //fragment shader for calculating color of the pixels
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
+    glBindVertexArray(0);
 
 
 
 
 
 
-
-
-
-
-
-    //Loop until the user closes the window  
     while (!glfwWindowShouldClose(window))
     {
-
         
-        //clearing screen 
-        glClear(GL_COLOR_BUFFER_BIT);
-        //setting background color
-        glClearColor(0.2, 0.2, 0.2, 0);
 
-        //swap front and back buffers (flip)
+
+
+        screen.clearScreen();
+        screen.updateScreen(shaderProgram, VAO);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
         glfwSwapBuffers(window);
-
-        //poll for process events
         glfwPollEvents();
     }
 
@@ -138,6 +143,21 @@ int main(void)
 
 
 
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    
+
+
+    shaderProgramOBJ.destroyProgram();
+
     glfwTerminate();
     return 0;
 }
+
+
+
+
+
+
+
