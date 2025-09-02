@@ -57,33 +57,27 @@ int main()
     }
     
     
+
     //object to reference and control vertex shader
-    Shader vertexShaderOBJ = {vertexShaderSource, GL_VERTEX_SHADER};
-    vertexShaderOBJ.createShader();
-    unsigned int vertexShader = vertexShaderOBJ.shader;
+    Shader vertexShader = {vertexShaderSource, GL_VERTEX_SHADER};
+    vertexShader.generate();
 
-    Shader fragmentShaderOBJ = { fragmentShaderSource, GL_FRAGMENT_SHADER };
-    fragmentShaderOBJ.createShader();
-    unsigned int fragmentShader = fragmentShaderOBJ.shader;
+    Shader fragmentShader = { fragmentShaderSource, GL_FRAGMENT_SHADER };
+    fragmentShader.generate();
 
 
 
+    //shader program object + program
+    ShaderProgram shaderProgram;
 
-    ShaderProgram shaderProgramOBJ;
-    unsigned int shaderProgram = shaderProgramOBJ.program;
+    //attaching shaders to
+    shaderProgram.attachShader(vertexShader.shader);
+    shaderProgram.attachShader(fragmentShader.shader);
 
-    shaderProgramOBJ.attachShader(vertexShader);
-    shaderProgramOBJ.attachShader(fragmentShader);
-
-    shaderProgramOBJ.linkProgram();
-
-
+    shaderProgram.link();
 
 
 
-
-
-   
 
 
     float vertices[] = {
@@ -94,30 +88,26 @@ int main()
 
 
 
-
-
-
-
     //setting up vertex buffer object + vertex array object
-    unsigned int VBO;
-    unsigned int VAO;
+    VertexBufferObject VBO;
+    VBO.generate(1);
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+    VertexArrayObject VAO;
+    VAO.generateArray(1);
 
-    glBindVertexArray(VAO);
+    //binding VAO and GL directly, and VBO with VAO through buffer
+    VAO.bind();
+    VBO.bind(GL_ARRAY_BUFFER);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    screen.addVertexData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+    screen.pointVertexAttr(0, sizeof(vertices), GL_VERTEX_ARRAY, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBindVertexArray(0);
-
+    //UNBINDING VBO and VAO buffer
+    VAO.unbind();
+    VBO.unbind();
 
 
 
@@ -127,29 +117,18 @@ int main()
     {
         
 
-
-
-        screen.clearScreen();
-        screen.updateScreen(shaderProgram, VAO);
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
 
 
 
 
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    VAO.destroy();
+    VBO.destroy();
     
 
 
-    shaderProgramOBJ.destroyProgram();
+    shaderProgram.destroy();
 
     glfwTerminate();
     return 0;
